@@ -28,9 +28,5 @@ module.exports = (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: true,
     },
-    // isExternal: {
-    //   type: DataTypes.BOOLEAN,
-    //   allowNull: true,
-    // },
   });
 };

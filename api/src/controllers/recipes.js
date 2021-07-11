@@ -7,126 +7,17 @@ const arr = [];
 // Get all the recipes from the api and add them to
 // the recipes I create in the post
 
-// Route => /recipes
-// function getAllRecipes(req, res, next) {
-//   const myRecipe = Recipe.findAll({
-//     include: [
-//       {
-//         model: Types,
-//         as: 'diets',
-//       },
-//     ],
-//   });
-//   const apiRecipes = axios.get(
-//     'https://api.spoonacular.com/recipes/complexSearch?number=10&apiKey=2f5bcb6368314289ad4c1ab24e98c5f7&addRecipeInformation=true'
-//   );
-//   Promise.all([myRecipe, apiRecipes])
-//     .then((results) => {
-//       const [myRecipeResults, apiRecipesResults] = results;
-//       let externalRecipes = [];
-//       apiRecipesResults.data.results.map((recipe) => {
-//         let externalRecipe = {};
-//         // externalRecipe.id = uuidv4();
-//         externalRecipe.id = recipe.id;
-//         externalRecipe.name = recipe.title;
-//         externalRecipe.image = recipe.image;
-//         externalRecipe.diets = recipe.diets;
-//         externalRecipes.score = recipe.spoonacularScore;
-//         externalRecipes.isExternal = true;
-//         externalRecipes.push(externalRecipe);
-//       });
-//       const response = myRecipeResults.concat(externalRecipes);
-//       return res.send(response);
-//     })
-//     .catch((err) => {
-//       next(err);
-//     });
-// }
-
-// // get recipe by id
-// function getById(req, res, next) {
-//   const { id } = req.params;
-//   console.log(id);
-//   const { isExternal } = req.query;
-//   console.log(req.query);
-//   // return Recipe.findByPk(id)
-//   //   .then((recipe) => res.json(recipe))
-//   //   .catch((err) => {
-//   //     next(err);
-//   //   });
-
-//   if (isExternal) {
-//     axios
-//       .get(
-//         `https://api.spoonacular.com/recipes/${id}/information?apiKey=2f5bcb6368314289ad4c1ab24e98c5f7`
-//       )
-//       .then((response) => {
-//         // console.log('====================================');
-//         // console.log(response.data);
-//         // console.log('====================================');
-//         let externalRecipe = {};
-//         externalRecipe.name = response.data.title;
-//         externalRecipe.image = response.data.image;
-//         externalRecipe.diets = response.data.diets;
-//         externalRecipe.score = response.data.spoonacularScore;
-//         externalRecipe.summary = response.summary;
-//         externalRecipe.healthScore = response.data.healthScore;
-//         externalRecipe.instructions = response.data.analyzedIntructions;
-//         externalRecipe.isExternal = true;
-//         res.send(externalRecipe);
-//       })
-//       .catch((err) => {
-//         next(err);
-//       });
-//   }
-
-//   Recipe.findAll({
-//     where: {
-//       id: {
-//         [Sequelize.Op.eq]: id,
-//         // .replace(
-//         //   '\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b'
-//         // ),
-//       },
-//     },
-//     // include: { model: Types, as: 'diets' },
-//   })
-//     .then((recipes) => {
-//       console.log('====================================');
-//       console.log(recipes[0]);
-//       console.log('====================================');
-//       let recipe = recipes[0];
-//       res.send(recipe);
-//     })
-//     .catch((err) => {
-//       next(err);
-//     });
-// }
-
-// // Route => /recipe
-
-// function addRecipe(req, res, next) {
-//   const recipe = req.body;
-//   arr.push(recipe);
-//   return Recipe.create({
-//     ...recipe,
-//     // id: uuidv4(),
-//   })
-//     .then((newRecipe) => res.json(newRecipe))
-//     .catch((err) => {
-//       next(err);
-//     });
-// }
-
 // ***** API ***** \\
-// const API_KEY = '2f5bcb6368314289ad4c1ab24e98c5f7';
-const API_KEY = '0e5262ac39694f468874a21ff9d2602c';
+const API_KEY = '2f5bcb6368314289ad4c1ab24e98c5f7';
+// const API_KEY = '0e5262ac39694f468874a21ff9d2602c';
+// const API_KEY = '231c716f75a4423498273c687d9a515d';
 
-async function getAllRecipes(req, res, next) {
+// ***** getAllRecipes ***** \\
+
+const getAllRecipes = async (req, res, next) => {
   try {
     if (req.query.name) {
-      const name = req.query.name;
-      console.log(name);
+      const { name } = req.query;
       let temporalrecipes = [];
       let temporalrecipes_bd2 = [];
       const requestquery = await axios.get(
@@ -143,9 +34,9 @@ async function getAllRecipes(req, res, next) {
       });
       recipes_bd.forEach((recipe) => {
         console.log(recipe);
-        let temporal_array = [];
+        let arr = [];
         recipe.dataValues.diets.forEach((diet) =>
-          temporal_array.push(diet.dataValues.name)
+          arr.push(diet.dataValues.name)
         );
         let obj = {
           id: recipe.dataValues.id,
@@ -154,7 +45,7 @@ async function getAllRecipes(req, res, next) {
           score: recipe.dataValues.rating,
           healthScore: recipe.dataValues.level_of_healthy,
           instructions: recipe.dataValues.step_by_step,
-          diets: temporal_array,
+          diets: arr,
         };
         temporalrecipes_bd2.push(obj);
       });
@@ -174,6 +65,9 @@ async function getAllRecipes(req, res, next) {
       return res.status(200).json([...temporalrecipes_bd2, ...temporalrecipes]);
     }
   } catch (err) {
+    console.log('====================================');
+    console.log(err);
+    console.log('====================================');
     next(err);
   }
   let temporalrecipes_bd = [];
@@ -199,11 +93,9 @@ async function getAllRecipes(req, res, next) {
   }
 
   recipes_bd2.forEach((recipe) => {
-    let temporal_array = [];
+    let arr = [];
     console.log('RECIPEEES', recipe);
-    recipe.dataValues.diets.forEach((diet) =>
-      temporal_array.push(diet.dataValues.name)
-    );
+    recipe.dataValues.diets.forEach((diet) => arr.push(diet.dataValues.name));
     let obj = {
       id: recipe.dataValues.id,
       name: recipe.dataValues.name,
@@ -212,73 +104,78 @@ async function getAllRecipes(req, res, next) {
       image: recipe.dataValues.image,
       healthScore: recipe.dataValues.level_of_healthy,
       instructions: recipe.dataValues.step_by_step,
-      diets: temporal_array,
+      diets: arr,
     };
     temporalrecipes_bd.push(obj);
   });
 
   console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', temporalrecipes_bd);
   return res.status(200).json([...temporalrecipes_bd, ...temporalrecipes]);
-}
+};
 
-async function getById(req, res, next) {
+// ***** getById ***** \\
+
+const getById = async (req, res, next) => {
   try {
-    let id = req.params.id;
-    console.log(req.params.id);
-    if (req.params.id.includes('-')) {
-      let recipe_bd = await Recipe.findOne({
+    const { id } = req.params;
+    if (id.includes('-')) {
+      let internalRecipe = await Recipe.findOne({
         where: {
           id,
         },
         include: { model: Types, as: 'diets' },
       });
 
-      let temporal_array = [];
-      recipe_bd.dataValues.diets.forEach((diet) =>
-        temporal_array.push(diet.dataValues.name)
+      let arr = [];
+      internalRecipe.dataValues.diets.forEach((diet) =>
+        arr.push(diet.dataValues.name)
       );
-      let obj = {
-        id: recipe_bd.id,
-        title: recipe_bd.name,
-        summary: recipe_bd.summary,
-        score: recipe_bd.score,
-        image: recipe_bd.image,
-        healthy_score: recipe_bd.healthScore,
-        step: recipe_bd.instructions,
-        diets: temporal_array,
+      let recipeAttributes = {
+        id: internalRecipe.id,
+        title: internalRecipe.name,
+        summary: internalRecipe.summary,
+        score: internalRecipe.score,
+        image: internalRecipe.image,
+        healthScore: internalRecipe.healthScore,
+        instructions: internalRecipe.instructions,
+        diets: arr,
       };
-      if (!recipe_bd)
-        return res.send({ error: 'not founded recipes in database' });
-      res.send(obj);
+      if (!internalRecipe) return res.send({ Error: 'Recipe not found.' });
+      res.send(recipeAttributes);
     } else {
-      let id = req.params.id;
-      let request_params = await axios.get(
+      const { id } = req.params;
+      let apiRecipe = await axios.get(
         `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
       );
 
-      let obj_params = {
-        id: request_params.data.id,
-        title: request_params.data.title,
-        image: request_params.data.image,
-        summary: request_params.data.summary,
-        score: request_params.data.spoonacularScore,
-        healthy_score: request_params.data.healthScore,
-        step: request_params.data.instructions,
-        diets: request_params.data.diets,
+      let apiRecipeAttributes = {
+        id: apiRecipe.data.id,
+        title: apiRecipe.data.title,
+        image: apiRecipe.data.image,
+        summary: apiRecipe.data.summary,
+        score: apiRecipe.data.spoonacularScore,
+        healthScore: apiRecipe.data.healthScore,
+        instructions: apiRecipe.data.instructions,
+        diets: apiRecipe.data.diets,
       };
-      res.json(obj_params);
+      res.json(apiRecipeAttributes);
     }
   } catch (err) {
+    console.log('====================================');
+    console.log(err);
+    console.log('====================================');
     next(err);
   }
-}
+};
 
-async function addRecipe(req, res, next) {
+// ***** addRecipe ***** \\
+
+const addRecipe = async (req, res, next) => {
   try {
     const { name, summary, score, image, healthScore, instructions, diets } =
       req.body;
 
-    let recipebd = await Recipe.create({
+    let newRecipe = await Recipe.create({
       id: uuidv4(),
       name,
       summary,
@@ -287,28 +184,31 @@ async function addRecipe(req, res, next) {
       healthScore,
       instructions,
     });
-    const temporal_obj = {
-      name: name,
-      summary: summary,
-      image: image,
-      score: score,
-      healthScore: healthScore,
-      instructions: instructions,
-      diets: diets,
-    };
+    // const recipeAttributes = {
+    //   name: name,
+    //   summary: summary,
+    //   image: image,
+    //   score: score,
+    //   healthScore: healthScore,
+    //   instructions: instructions,
+    //   diets: diets,
+    // };
     for (i = 0; i < diets.length; i++) {
-      const diet_db = await Types.findOne({
+      const diet = await Types.findAll({
         where: {
           name: diets[i],
         },
       });
-      recipebd.addDiet(diet_db);
+      newRecipe.addDiet(diet);
     }
-    res.send([temporal_obj]);
+    res.send(newRecipe);
   } catch (err) {
+    console.log('====================================');
+    console.log(err);
+    console.log('====================================');
     next(err);
   }
-}
+};
 
 module.exports = {
   getAllRecipes,

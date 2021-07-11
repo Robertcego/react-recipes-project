@@ -1,4 +1,3 @@
-// const server = require('express').Router();
 const { Types } = require('../db.js');
 
 function getAllTypes(req, res, next) {
