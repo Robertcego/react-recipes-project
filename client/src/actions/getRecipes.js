@@ -1,13 +1,16 @@
 import { GET_RECIPES } from '.';
-
+const axios = require('axios');
 const getRecipes = () => {
   return async (dispatch) => {
-    const response = await fetch('http://localhost:3001/recipes');
-    const recipes = await response.json();
-    dispatch({
-      type: GET_RECIPES,
-      payload: recipes,
-    });
+    try {
+      const recipes = await axios.get('http://localhost:3001/recipes');
+      dispatch({
+        type: GET_RECIPES,
+        payload: recipes.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 

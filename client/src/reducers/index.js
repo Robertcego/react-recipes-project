@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   getRecipes: [],
-  recipeDetails: '',
+  recipeDetails: [],
   getRecipesName: [],
   getDiets: [],
   postRecipe: {},
@@ -16,11 +16,12 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case GET_RECIPES:
+    case GET_RECIPES: {
       return {
         ...state,
         getRecipes: action.payload,
       };
+    }
     case GET_RECIPE_DETAILS: {
       return {
         ...state,

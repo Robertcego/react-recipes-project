@@ -5,18 +5,22 @@ const axios = require('axios');
 // The action contains the recipe to be posted.
 const postRecipe = (recipe) => {
   return async (dispatch) => {
-    const postRecipe = await axios.post('http://localhost:3001/recipe', {
-      name: recipe.name,
-      summary: recipe.summary,
-      score: recipe.score,
-      healthScore: recipe.healthScore,
-      instructions: recipe.instructions,
-      diets: recipe.diets,
-    });
-    dispatch({
-      type: POST_RECIPE,
-      payload: postRecipe.data,
-    });
+    try {
+      const postRecipe = await axios.post('http://localhost:3001/recipe', {
+        name: recipe.name,
+        summary: recipe.summary,
+        score: recipe.score,
+        healthScore: recipe.healthScore,
+        instructions: recipe.instructions,
+        diets: recipe.diets,
+      });
+      dispatch({
+        type: POST_RECIPE,
+        payload: postRecipe.data,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 

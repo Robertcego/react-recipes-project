@@ -19,7 +19,7 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
-const { Types } = require('./src/db.js');
+const { Diet } = require('./src/db.js');
 
 // Syncing all the models at once.
 conn
@@ -44,7 +44,7 @@ conn
     ];
 
     diets.map((diet) => {
-      Types.create({
+      Diet.create({
         name: diet,
       });
     });

@@ -1,7 +1,7 @@
-const { Types } = require('../db.js');
+const { Diet } = require('../db.js');
 
 function getAllTypes(req, res, next) {
-  return Types.findAll()
+  return Diet.findAll()
     .then((type) => {
       console.log(type);
       res.json(type);

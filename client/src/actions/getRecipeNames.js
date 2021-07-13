@@ -1,15 +1,18 @@
 import { GET_RECIPE_NAMES } from '.';
-
+const axios = require('axios');
 const getRecipeNames = (recipeName) => {
   return async (dispatch) => {
-    const response = await fetch(
-      `http://localhost:3001/recipes?name=${recipeName}`
-    );
-    const recipe = await response.json();
-    dispatch({
-      type: GET_RECIPE_NAMES,
-      payload: recipe,
-    });
+    try {
+      const recipes = await axios.get(
+        `http://localhost:3001/recipes?name=${recipeName}`
+      );
+      dispatch({
+        type: GET_RECIPE_NAMES,
+        payload: recipes.data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
