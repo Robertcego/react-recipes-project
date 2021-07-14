@@ -1,4 +1,4 @@
-import { POST_RECIPE } from '.';
+import { POST_RECIPE } from '../index';
 const axios = require('axios');
 
 // Action creator that creates an action of type POST_RECIPE.

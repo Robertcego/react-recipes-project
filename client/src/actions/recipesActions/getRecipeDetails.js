@@ -1,4 +1,4 @@
-import { GET_RECIPE_DETAILS } from '.';
+import { GET_RECIPE_DETAILS } from '../index';
 const axios = require('axios');
 const getRecipeDetails = (id) => {
   return async (dispatch) => {

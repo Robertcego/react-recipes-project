@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import DotsLoader from '../../utils/dotsLoader/DotsLoader';
+import FoodTrivia from '../../utils/foodTrivia/FoodTrivia';
 
 import './Recipe.component.css';
 
@@ -15,6 +16,7 @@ function Recipe({ recipes, loading }) {
     );
   return (
     <div className='main-container'>
+      <FoodTrivia />
       <div className='recipe-container'>
         {recipes.map((recipe) => (
           <div className='recipe-card' key={recipe.id}>

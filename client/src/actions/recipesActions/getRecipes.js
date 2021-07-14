@@ -1,4 +1,4 @@
-import { GET_RECIPES } from '.';
+import { GET_RECIPES } from '../index';
 const axios = require('axios');
 const getRecipes = () => {
   return async (dispatch) => {

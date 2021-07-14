@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import './Pagination.component.css';
 
@@ -15,9 +15,13 @@ function Pagination({ recipesPerPage, totalRecipes, paginate }) {
       <ul className='list-container'>
         {pageNumbers.map((pageNumber) => (
           <li className='list' key={pageNumber}>
-            <Link onClick={() => paginate(pageNumber)} to={pageNumber}>
+            <NavLink
+              activeClassName='active'
+              onClick={() => paginate(pageNumber)}
+              to={pageNumber}
+            >
               {pageNumber}
-            </Link>
+            </NavLink>
           </li>
         ))}
       </ul>

@@ -1,4 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,300&display=swap');
 .App {
   text-align: center;
   max-width: 100vw;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.colors {
+  color: #362417;
+  color: #92817a;
+  color: #f1dabf;
+  color: #fffbff;
+  color: #04030f;
 }

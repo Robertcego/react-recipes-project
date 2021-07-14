@@ -1,4 +1,4 @@
-import { GET_RECIPE_NAMES } from '.';
+import { GET_RECIPE_NAMES } from '../index';
 const axios = require('axios');
 const getRecipeNames = (recipeName) => {
   return async (dispatch) => {
