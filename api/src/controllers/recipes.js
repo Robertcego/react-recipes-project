@@ -13,8 +13,8 @@ const axios = require('axios');
 // const API_KEY = '231c716f75a4423498273c687d9a515d';
 // const API_KEY = 'b95031f742694550ac1254dc10ce554e';
 // const API_KEY = '337a3948a09a4db69a2a549e4a9389e9';
-const API_KEY = 'ae481a929f3a482e888842470383726f';
-// const API_KEY = 'e63d396d22ff46d58f9347d997dbe1e0';
+// const API_KEY = 'ae481a929f3a482e888842470383726f';
+const API_KEY = 'e63d396d22ff46d58f9347d997dbe1e0';
 // const API_KEY = '638b58a40c3344bebe9e4d44b52b083c';
 // const API_KEY = '1f554d43be8746f89ad35d052160c0eb';
 // const API_KEY = '044ea3e089db4849920884a51ed83add';
@@ -70,6 +70,8 @@ const getAllRecipes = async (req, res, next) => {
           name: requestquery.data.results[i].title,
           image: requestquery.data.results[i].image,
           diets: requestquery.data.results[i].diets,
+          score: requestquery.data.results[i].spoonacularScore,
+          healthScore: requestquery.data.results[i].healthScore,
         };
         temporalrecipes.push(obj);
         console.log(requestquery.data.results[i].id);

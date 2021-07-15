@@ -61,7 +61,14 @@ function Recipes() {
         totalRecipes={sortedRecipes.length}
         paginate={paginate}
       />
+      {/* Recipes here*/}
       <Recipe recipes={recipesToDisplay} loading={loading} />
+      {/* Recipes here*/}
+      <Pagination
+        recipesPerPage={recipesPerPage}
+        totalRecipes={sortedRecipes.length}
+        paginate={paginate}
+      />
     </div>
   );
 }

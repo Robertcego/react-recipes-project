@@ -36,7 +36,7 @@ function FoodTrivia() {
     fetchTrivia();
   }, []);
 
-  console.log(trivia);
+  // console.log(trivia);
   return (
     <div>
       <div className='trivia-container'>
