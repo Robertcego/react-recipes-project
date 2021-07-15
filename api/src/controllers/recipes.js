@@ -12,8 +12,8 @@ const axios = require('axios');
 // const API_KEY = '0e5262ac39694f468874a21ff9d2602c';
 // const API_KEY = '231c716f75a4423498273c687d9a515d';
 // const API_KEY = 'b95031f742694550ac1254dc10ce554e';
-const API_KEY = '337a3948a09a4db69a2a549e4a9389e9';
-// const API_KEY = 'ae481a929f3a482e888842470383726f';
+// const API_KEY = '337a3948a09a4db69a2a549e4a9389e9';
+const API_KEY = 'ae481a929f3a482e888842470383726f';
 // const API_KEY = 'e63d396d22ff46d58f9347d997dbe1e0';
 // const API_KEY = '638b58a40c3344bebe9e4d44b52b083c';
 // const API_KEY = '1f554d43be8746f89ad35d052160c0eb';
@@ -75,8 +75,8 @@ const getAllRecipes = async (req, res, next) => {
         console.log(requestquery.data.results[i].id);
       }
       if (recipes_bd.length < 1 && temporalrecipes < 1)
-        return res.status(404).json({ Error: 'No recipes found' });
-      return res.status(200).json([...temporalrecipes_bd2, ...temporalrecipes]);
+        return res.status(404).send({ Error: 'No recipes found' });
+      return res.status(200).send([...temporalrecipes_bd2, ...temporalrecipes]);
     }
   } catch (err) {
     console.log('====================================');
@@ -127,7 +127,7 @@ const getAllRecipes = async (req, res, next) => {
     };
     temporalrecipes_bd.push(obj);
   });
-  return res.status(200).json([...temporalrecipes_bd, ...temporalrecipes]);
+  return res.status(200).send([...temporalrecipes_bd, ...temporalrecipes]);
 };
 
 // ***** getById ***** \\
@@ -183,7 +183,7 @@ const getById = async (req, res, next) => {
         instructions: apiRecipe.data.instructions,
         diets: apiRecipe.data.diets,
       };
-      res.json(apiRecipeAttributes);
+      res.send(apiRecipeAttributes);
     }
   } catch (err) {
     console.log('====================================');
@@ -226,7 +226,7 @@ const addRecipe = async (req, res, next) => {
 
       newRecipe.addDiets(diet);
     }
-    res.send(recipeAttributes);
+    res.json(recipeAttributes);
   } catch (err) {
     next(err);
   }

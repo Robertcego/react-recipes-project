@@ -13,23 +13,31 @@ function RecipesDetail() {
     dispatch(getRecipeDetails(id));
   }, [dispatch, id]);
 
-  const recipe = [];
-  recipe.push(recipeDetail);
-  console.log(recipe);
+  // const recipe = [];
+  // recipe.push(recipeDetail);
+  // console.log(recipeDetail);
+
+  // DOM element rendered with dangeorouslySetInnerHTML
+  const summary = () => {
+    return { __html: recipeDetail.summary };
+  };
+  const instructions = () => {
+    return { __html: recipeDetail.instructions };
+  };
+
   return (
     <div>
-      {recipe.map((recipe) => (
-        <div key={recipe.id}>
-          <h2>{recipe.name}</h2>
-          <p>{recipe.diets}</p>
-          <p>{recipe.summary}</p>
-          <p>
-            {recipe.healthScore} {recipe.score}
-          </p>
-          <p>{recipe.instructions}</p>
-          <img src={recipe.image} alt={recipe.name} />
-        </div>
-      ))}
+      {/* {recipe.map((recipe) => ( */}
+      <div key={recipeDetail.id}>
+        <h2>{recipeDetail.name}</h2>
+        Health Score: {recipeDetail.healthScore} Score: {recipeDetail.score}
+        <p>{recipeDetail.diets}</p>
+        <div dangerouslySetInnerHTML={summary()} />
+        <h3>Instructions:</h3>
+        <div dangerouslySetInnerHTML={instructions()} />
+        <img src={recipeDetail.image} alt={recipeDetail.name} />
+      </div>
+      {/* ))} */}
     </div>
   );
 }

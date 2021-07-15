@@ -1,7 +1,7 @@
 import React from 'react';
 
 function RecipesSearch() {
-  return <div></div>;
+  return <div>Hello world!</div>;
 }
 
 export default RecipesSearch;

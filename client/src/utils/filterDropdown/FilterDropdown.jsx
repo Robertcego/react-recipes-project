@@ -45,10 +45,10 @@ function FilterDropdown() {
         ))}
       </select>
       <select onChange={(e) => handleSort(e)}>
-        <option value='High_Score'>Score:High to Low</option>
-        <option value='Low_Score'>Score: Low to High</option>
-        <option value='Ascending_Name'>Name (A-Z)</option>
-        <option value='Descending_Name'>Name (Z-A)</option>
+        <option value='High_Score'>Score: Low to High</option>
+        <option value='Low_Score'>Score: High to Low</option>
+        <option value='Ascending_Name'>Ascending Name (A-Z)</option>
+        <option value='Descending_Name'>Descending Name (Z-A)</option>
       </select>
     </div>
   );

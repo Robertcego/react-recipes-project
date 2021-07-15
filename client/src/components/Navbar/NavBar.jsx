@@ -13,10 +13,10 @@ function NavBar() {
         <NavLink className='navbar-item' to='/recipes'>
           Recipes
         </NavLink>
-        <NavLink className='navbar-item' to=''>
+        <NavLink className='navbar-item' to='/search'>
           Search
         </NavLink>
-        <NavLink className='navbar-item' to=''>
+        <NavLink className='navbar-item' to='/create'>
           Create Recipe
         </NavLink>
       </div>
