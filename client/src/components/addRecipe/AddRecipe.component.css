@@ -1,0 +1,60 @@
+.main-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+}
+
+.main-form-container h4 {
+  text-align: left;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-card {
+  background-color: #f1dabf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 65vw;
+  padding: 1rem;
+  border-radius: 1.5rem;
+  box-shadow: 0px 5px 30px 1px #908b88;
+}
+
+.form-title {
+  margin-bottom: 2rem;
+  text-decoration: underline;
+}
+
+.img-form-container {
+  margin-right: 8rem;
+  padding: 1rem 0;
+}
+
+.img-form-container img {
+  border-radius: 1.5rem;
+}
+
+.checkbox-container {
+  display: flex;
+}
+
+.form-submit-btn {
+  height: 2.4rem;
+  width: 20rem;
+  background-color: #362417;
+  color: #f1dabf;
+  font-size: 1.3rem;
+  border-radius: 0.8rem;
+  border-style: none;
+  cursor: pointer;
+}
+
+.colors {
+  color: #362417;
+  color: #92817a;
+  color: #f1dabf;
+  color: #fffbff;
+  color: #04030f;
+}

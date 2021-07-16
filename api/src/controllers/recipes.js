@@ -26,7 +26,12 @@ const axios = require('axios');
 // const API_KEY = '325a7fb4a69e4548b376fd4c4093934f';
 // const API_KEY = '9b1c6d5760ca44a0a94ce2c35c91c159';
 // const API_KEY = '2b9c90b703b942c5bf2a255e90406bf3';
-const API_KEY = 'a333439908d84f7a8d70f13dd1c58f1b';
+// const API_KEY = 'a333439908d84f7a8d70f13dd1c58f1b';
+// const API_KEY = '9ff6097fa58e4dfe9cedaab87903cbf1';
+// const API_KEY = '53ab6e71493e44018e59123d6d7a334c';
+const API_KEY = '810221e35af9434fa51c1f9b9208288b';
+// const API_KEY = 'f82367cf3574481aa9b0f9c27d225015';
+// const API_KEY = 'ff755847d8b44e34b25a6381c5ef035d';
 
 // ***** getAllRecipes ***** \\
 

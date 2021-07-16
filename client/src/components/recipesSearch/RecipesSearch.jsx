@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getRecipeNames } from '../../actions/index';
 import Recipe from '../recipe/Recipe';
 
+import './RecipesSearch.component.css';
+
 function RecipesSearch() {
   const dispatch = useDispatch();
   const getRecipesName = useSelector((state) => state.getRecipesName);
@@ -23,20 +25,15 @@ function RecipesSearch() {
   return (
     <div>
       <form onSubmit={handleSubmit}>
+        <h2 className='search-form-title'>Search for a recipe</h2>
         <input
+          className='search-input-bar'
           type='text'
-          name='q'
+          placeholder='Search and hit enter'
           value={recipeNames}
           onChange={handleRecipeName}
         />
       </form>
-      {/* <div>
-        {getRecipesName.map((recipe) => (
-          <div key={recipe.id}>
-            <h3>{recipe.name}</h3>
-          </div>
-        ))}
-      </div> */}
       <Recipe recipes={getRecipesName} />
     </div>
   );

@@ -25,27 +25,36 @@
 input[type='text'] {
   border-style: none;
   border-bottom: 2px solid #362417;
-  border-left: 2px solid #362417;
+  /* border-left: 2px solid #362417; */
   outline: none;
   width: 20rem;
   height: 2rem;
   font-size: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #fffbff;
 }
 input[type='number'] {
   border-style: none;
   border-bottom: 2px solid #362417;
-  border-left: 2px solid #362417;
+  /* border-left: 2px solid #362417; */
   outline: none;
   width: 20rem;
   height: 2rem;
   font-size: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #fffbff;
 }
 textarea {
   border-style: none;
   border-bottom: 2px solid #362417;
-  border-left: 2px solid #362417;
+  /* border-left: 2px solid #362417; */
   outline: none;
   width: 20rem;
-  height: 2rem;
+  height: 5rem;
   font-size: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background-color: #fffbff;
 }

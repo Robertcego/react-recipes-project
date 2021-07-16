@@ -3,6 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { postRecipe, getDiets } from '../../actions/index';
 
+import './AddRecipe.component.css';
+
+const recipePlaceholder = 'https://source.unsplash.com/650x700?food';
+
 function AddRecipe() {
   const dispatch = useDispatch();
 
@@ -90,75 +94,90 @@ function AddRecipe() {
 
   console.log(recipe);
   return (
-    <form onSubmit={handleSubmit}>
-      {/* {next === 0 && ( */}
-      <div>
-        <h4>Name</h4>
-        <input
-          type='text'
-          name='name'
-          placeholder='Name'
-          onChange={handleChange}
-        />
-        <h4>Summary</h4>
-        <textarea
-          name='summary'
-          placeholder='Recipe Summary'
-          onChange={handleChange}
-        />
-      </div>
-      {/* )} */}
-      {/* {next === 1 && ( */}
-      <div>
-        <h3>Score</h3>
-        <input
-          type='number'
-          name='score'
-          placeholder='Score'
-          onChange={handleChange}
-        />
-        <h3>Health Score</h3>
-        <input
-          type='number'
-          name='healthScore'
-          placeholder='Health Score'
-          onChange={handleChange}
-        />
-      </div>
-      {/* )} */}
-      {/* {next === 2 && ( */}
-      <div>
-        <h4>Instructions</h4>
-        <textarea
-          name='instructions'
-          cols='30'
-          rows='10'
-          placeholder='Instructions'
-          onChange={handleChange}
-        />
-        <h4>Diets</h4>
-
-        {diets.map((diet) => (
-          <div key={diet.id}>
-            <label>
-              <span>{diet.name}</span>
-            </label>
+    <div className='main-form-container'>
+      <div className='form-card'>
+        <div className='img-form-container'>
+          <img src={recipePlaceholder} alt='' />
+        </div>
+        <form onSubmit={handleSubmit}>
+          {/* {next === 0 && ( */}
+          <div>
+            <h1 className='form-title'>Create your own recipe!</h1>
+            <h4>Name</h4>
             <input
-              type='checkbox'
-              name='diets'
-              value={diet.id}
-              onChange={handleChecked}
+              type='text'
+              name='name'
+              placeholder='Name'
+              onChange={handleChange}
+            />
+            <h4>Summary</h4>
+            <textarea
+              name='summary'
+              placeholder='Recipe Summary'
+              onChange={handleChange}
             />
           </div>
-        ))}
+          {/* )} */}
+          {/* {next === 1 && ( */}
+          <div>
+            <h4>Score</h4>
+            <input
+              type='number'
+              name='score'
+              min='0'
+              max='100'
+              placeholder='Score'
+              onChange={handleChange}
+            />
+            <h4>Health Score</h4>
+            <input
+              type='number'
+              name='healthScore'
+              min='0'
+              max='100'
+              placeholder='Health Score'
+              onChange={handleChange}
+            />
+          </div>
+          {/* )} */}
+          {/* {next === 2 && ( */}
+          <div>
+            <h4>Instructions</h4>
+            <textarea
+              name='instructions'
+              cols='30'
+              rows='10'
+              placeholder='Instructions'
+              onChange={handleChange}
+            />
+            <h4>Diets</h4>
+
+            {diets.map((diet) => (
+              <div className='checkbox-container' key={diet.id}>
+                <div className='checkbox-items'>
+                  <label>{diet.name}</label>
+                  <input
+                    className='checkbox-item-list'
+                    type='checkbox'
+                    name='diets'
+                    value={diet.id}
+                    onChange={handleChecked}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* )} */}
+          {/* {next === 3 && <h1>Success!</h1>} */}
+          {/* {next <= 3 && <p>{`Step: ${next} / 3`}</p>} */}
+          {/* {renderPreviousButton()} */}
+          {/* {renderNextButton()} */}
+          <button className='form-submit-btn' type='submit'>
+            Submit Recipe
+          </button>
+        </form>
       </div>
-      {/* )} */}
-      {/* {next === 3 && <h1>Success!</h1>} */}
-      {/* {next <= 3 && <p>{`Step: ${next} / 3`}</p>} */}
-      {/* {renderPreviousButton()} */}
-      {/* {renderNextButton()} */}
-      <button type='submit'>Submit Recipe</button>
-    </form>
+    </div>
   );
 }
 
