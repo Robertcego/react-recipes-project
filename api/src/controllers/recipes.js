@@ -14,71 +14,77 @@ const axios = require('axios');
 // const API_KEY = 'b95031f742694550ac1254dc10ce554e';
 // const API_KEY = '337a3948a09a4db69a2a549e4a9389e9';
 // const API_KEY = 'ae481a929f3a482e888842470383726f';
-const API_KEY = 'e63d396d22ff46d58f9347d997dbe1e0';
+// const API_KEY = 'e63d396d22ff46d58f9347d997dbe1e0';
 // const API_KEY = '638b58a40c3344bebe9e4d44b52b083c';
 // const API_KEY = '1f554d43be8746f89ad35d052160c0eb';
 // const API_KEY = '044ea3e089db4849920884a51ed83add';
 // const API_KEY = '7198aa54902d4f7b8800b87cd3f3eb96';
-// const API_KEY = '0f1cc946d524471f8699a26de042da04'; <---
+// const API_KEY = '0f1cc946d524471f8699a26de042da04'; // <---
 // const API_KEY = 'ec6f9c2db72b4c87adb779e34ab86d1b';
 // const API_KEY = 'cf9249384cbc4867b3131e7ab75a7037';
-// const API_KEY = '0d9677907f744e3c8b5158c8e4d7cfd4';
+const API_KEY = '0d9677907f744e3c8b5158c8e4d7cfd4';
 // const API_KEY = '325a7fb4a69e4548b376fd4c4093934f';
 
 // ***** getAllRecipes ***** \\
 
-const getAllRecipes = async (req, res, next) => {
+const getRecipesName = async (req, res, next) => {
+  const { name } = req.query;
   try {
-    if (req.query.name) {
-      const { name } = req.query;
-      let temporalrecipes = [];
-      let temporalrecipes_bd2 = [];
-      const requestquery = await axios.get(
-        `https://api.spoonacular.com/recipes/complexSearch?query=${name}&number=9&addRecipeInformation=true&apiKey=${API_KEY}`
-      );
-      const recipes_bd = await Recipe.findAll({
-        where: {
-          name: {
-            [Sequelize.Op.iLike]: `%${name}%`,
-          },
-        },
-        attributes: { exclude: ['createdAt', 'updatedAt'] },
-        include: { model: Diet },
-      });
-      recipes_bd.forEach((recipe) => {
-        console.log(recipe);
-        let arr = [];
-        recipe.dataValues.diets.forEach((diet) =>
-          arr.push(diet.dataValues.name)
-        );
-        let obj = {
-          id: recipe.dataValues.id,
-          name: recipe.dataValues.name,
-          summary: recipe.dataValues.summary,
-          score: recipe.dataValues.score,
-          healthScore: recipe.dataValues.healthScore,
-          instructions: recipe.dataValues.intructions,
-          diets: arr,
-        };
-        temporalrecipes_bd2.push(obj);
-      });
+    const apiRecipes = await axios.get(
+      `https://api.spoonacular.com/recipes/complexSearch?query=${name}&number=9&addRecipeInformation=true&apiKey=${API_KEY}`
+    );
+    const apiRecipesAttributes = [];
+    for (let i = 0; i < apiRecipes.data.results.length; i++) {
+      let apiRecipe = {
+        id: apiRecipes.data.results[i].id,
+        name: apiRecipes.data.results[i].title,
+        diets: apiRecipes.data.results[i].diets,
+        summary: apiRecipes.data.results[i].summary,
+        score: apiRecipes.data.results[i].spoonacularScore,
+        healthScore: apiRecipes.data.results[i].healthScore,
+        instructions: apiRecipes.data.results[i].instructions,
+        image: apiRecipes.data.results[i].image,
+      };
+      apiRecipesAttributes.push(apiRecipe);
+    }
 
-      // ! Get the recipe properties from the search by term query
-      for (i = 0; i < requestquery.data.results.length; i++) {
-        let obj = {
-          id: requestquery.data.results[i].id,
-          name: requestquery.data.results[i].title,
-          image: requestquery.data.results[i].image,
-          diets: requestquery.data.results[i].diets,
-          score: requestquery.data.results[i].spoonacularScore,
-          healthScore: requestquery.data.results[i].healthScore,
-        };
-        temporalrecipes.push(obj);
-        console.log(requestquery.data.results[i].id);
+    const dbRecipes = await Recipe.findAll({
+      where: {
+        name: {
+          [Sequelize.Op.iLike]: `%${name}%`,
+        },
+      },
+      include: Diet,
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
+    });
+
+    if (dbRecipes.length === 0) {
+      let recipeResults = apiRecipesAttributes;
+
+      console.log(apiRecipesAttributes);
+      if (apiRecipesAttributes.length === 0) {
+        return res.status(404).send('Recipes not found');
       }
-      if (recipes_bd.length < 1 && temporalrecipes < 1)
-        return res.status(404).send({ Error: 'No recipes found' });
-      return res.status(200).send([...temporalrecipes_bd2, ...temporalrecipes]);
+      return res.send(recipeResults);
+    } else {
+      let dataResponse = [];
+      for (let i = 0; i < dbRecipes.length; i++) {
+        let diets = [];
+        dbRecipes[i].diets.map((diet) => diets.push(diet.name));
+        let dbResponse = {
+          id: dbRecipes[i].id,
+          name: dbRecipes[i].name,
+          summary: dbRecipes[i].summary,
+          score: dbRecipes[i].score,
+          healthScore: dbRecipes[i].healthScore,
+          instructions: dbRecipes[i].instructions,
+          diets: diets,
+        };
+        dataResponse.push(dbResponse);
+      }
+      let allRecipes = dataResponse.concat(apiRecipesAttributes);
+
+      return res.send(allRecipes);
     }
   } catch (err) {
     console.log('====================================');
@@ -86,50 +92,58 @@ const getAllRecipes = async (req, res, next) => {
     console.log('====================================');
     next(err);
   }
-  let temporalrecipes_bd = [];
-  let temporalrecipes = [];
-  const recipes_bd2 = await Recipe.findAll({
-    include: { model: Diet },
-    attributes: { exclude: ['createdAt', 'updatedAt'] },
-  }).catch((err) => {
+};
+
+const getAllRecipes = async (req, res, next) => {
+  try {
+    const apiRecipes = await axios.get(
+      `https://api.spoonacular.com/recipes/complexSearch?&number=100&addRecipeInformation=true&apiKey=${API_KEY}`
+    );
+
+    const apiRecipesAttributes = [];
+    for (let i = 0; i < apiRecipes.data.results.length; i++) {
+      let apiRecipe = {
+        id: apiRecipes.data.results[i].id,
+        name: apiRecipes.data.results[i].title,
+        diets: apiRecipes.data.results[i].diets,
+        summary: apiRecipes.data.results[i].summary,
+        score: apiRecipes.data.results[i].spoonacularScore,
+        healthScore: apiRecipes.data.results[i].healthScore,
+        instructions: apiRecipes.data.results[i].instructions,
+        image: apiRecipes.data.results[i].image,
+      };
+      apiRecipesAttributes.push(apiRecipe);
+    }
+
+    const dbRecipes = await Recipe.findAll({
+      include: Diet,
+    });
+    if (dbRecipes.length === 0) {
+      return res.send(apiRecipesAttributes);
+    }
+    let dataResponse = [];
+    for (let i = 0; i < dbRecipes.length; i++) {
+      let diets = [];
+      dbRecipes[i].diets.map((diet) => diets.push(diet.name));
+      let dbResponse = {
+        id: dbRecipes[i].id,
+        name: dbRecipes[i].name,
+        summary: dbRecipes[i].summary,
+        score: dbRecipes[i].score,
+        healthScore: dbRecipes[i].healthScore,
+        instructions: dbRecipes[i].instructions,
+        diets: diets,
+      };
+      dataResponse.push(dbResponse);
+    }
+    const allRecipes = dataResponse.concat(apiRecipesAttributes);
+    return res.send(allRecipes);
+  } catch (err) {
     console.log('====================================');
     console.log(err);
     console.log('====================================');
-  });
-
-  // !Get all recipes (100)
-  const requestquery2 = await axios.get(
-    `https://api.spoonacular.com/recipes/complexSearch?&number=100&addRecipeInformation=true&apiKey=${API_KEY}`
-  );
-  for (i = 0; i < requestquery2.data.results.length; i++) {
-    let obj = {
-      id: requestquery2.data.results[i].id,
-      name: requestquery2.data.results[i].title,
-      image: requestquery2.data.results[i].image,
-      diets: requestquery2.data.results[i].diets,
-      healthScore: requestquery2.data.results[i].healthScore,
-      score: requestquery2.data.results[i].spoonacularScore,
-    };
-    temporalrecipes.push(obj);
+    next(err);
   }
-
-  // ! Get the recipes from the database
-  recipes_bd2.forEach((recipe) => {
-    let arr = [];
-    recipe.dataValues.diets.forEach((diet) => arr.push(diet.dataValues.name));
-    let obj = {
-      id: recipe.dataValues.id,
-      name: recipe.dataValues.name,
-      summary: recipe.dataValues.summary,
-      score: recipe.dataValues.score,
-      image: recipe.dataValues.image,
-      healthScore: recipe.dataValues.healthScore,
-      instructions: recipe.dataValues.instructions,
-      diets: arr,
-    };
-    temporalrecipes_bd.push(obj);
-  });
-  return res.status(200).send([...temporalrecipes_bd, ...temporalrecipes]);
 };
 
 // ***** getById ***** \\
@@ -140,11 +154,11 @@ const getById = async (req, res, next) => {
 
     // ! Make sure the recipe exists and has an UUID
     if (id.includes('-')) {
-      let internalRecipe = await Recipe.findOne({
+      let dbRecipe = await Recipe.findOne({
         where: {
           id,
         },
-        include: { model: Diet },
+        include: Diet,
       }).catch((err) => {
         console.log('====================================');
         console.log(err);
@@ -152,22 +166,22 @@ const getById = async (req, res, next) => {
       });
 
       let arr = [];
-      internalRecipe.dataValues.diets.forEach((diet) =>
+      dbRecipe.dataValues.diets.forEach((diet) =>
         arr.push(diet.dataValues.name)
       );
 
       // ! Recipe from the database
       let recipeAttributes = {
-        id: internalRecipe.id,
-        name: internalRecipe.name,
-        summary: internalRecipe.summary,
-        score: internalRecipe.score,
-        image: internalRecipe.image,
-        healthScore: internalRecipe.healthScore,
-        instructions: internalRecipe.instructions,
+        id: dbRecipe.id,
+        name: dbRecipe.name,
+        summary: dbRecipe.summary,
+        score: dbRecipe.score,
+        image: dbRecipe.image,
+        healthScore: dbRecipe.healthScore,
+        instructions: dbRecipe.instructions,
         diets: arr,
       };
-      if (!internalRecipe) return res.send({ Error: 'Recipe not found.' });
+      if (!dbRecipe) return res.send({ Error: 'Recipe not found.' });
       res.send(recipeAttributes);
     } else {
       const { id } = req.params;
@@ -208,34 +222,29 @@ const addRecipe = async (req, res, next) => {
       score,
       healthScore,
       instructions,
-      diets,
     });
-    const recipeAttributes = {
-      name: name,
-      summary: summary,
-      score: score,
-      healthScore: healthScore,
-      instructions: instructions,
-      diets: diets,
-    };
-    for (i = 0; i < diets.length; i++) {
-      console.log(diets[i]);
-      const diet = await Diet.findOne({
-        where: {
-          name: diets[i],
-        },
-      });
 
-      newRecipe.addDiets(diet);
+    for (i = 0; i < diets.length; i++) {
+      await newRecipe.addDiet(diets[i], { through: 'recipeType' });
     }
-    res.json(recipeAttributes);
+    const recipeDiets = await Recipe.findOne({
+      where: {
+        name: req.body.name,
+      },
+      include: Diet,
+    });
+    return res.json(recipeDiets);
   } catch (err) {
+    console.log('====================================');
+    console.log(err);
+    console.log('====================================');
     next(err);
   }
 };
 
 module.exports = {
   getAllRecipes,
+  getRecipesName,
   getById,
   addRecipe,
 };

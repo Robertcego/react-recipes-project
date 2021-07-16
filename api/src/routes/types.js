@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const router = Router();
 
-const { getAllTypes } = require('../controllers/types');
+const { getAllDiets } = require('../controllers/diets');
 
-router.get('/', getAllTypes);
+router.get('/', getAllDiets);
 
 module.exports = router;

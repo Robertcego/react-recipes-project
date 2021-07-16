@@ -16,7 +16,7 @@ function Pagination({ recipesPerPage, totalRecipes, paginate }) {
         {pageNumbers.map((pageNumber) => (
           <li className='list' key={pageNumber}>
             <NavLink
-              activeClassName='active'
+              // activeClassName='active'
               onClick={() => paginate(pageNumber)}
               to={pageNumber}
             >

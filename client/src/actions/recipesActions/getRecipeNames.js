@@ -4,7 +4,7 @@ const getRecipeNames = (recipeName) => {
   return async (dispatch) => {
     try {
       const recipes = await axios.get(
-        `http://localhost:3001/recipes?name=${recipeName}`
+        `http://localhost:3001/recipes/search?name=${recipeName}`
       );
       dispatch({
         type: GET_RECIPE_NAMES,

@@ -1,15 +1,16 @@
-/* .list {
-  height: 20px;
+.list {
+  /* height: 20px;
   width: 20px;
   display: flex;
-  flex-direction: row;
+  flex-direction: row; */
   list-style: none;
   text-decoration: none;
-} */
+}
 
 .list a {
   /* padding-right: 0.5rem; */
   text-decoration: none;
+  list-style: none;
   color: rgb(35, 185, 153);
   /* border-right: #2f2f2f 1px solid; */
   /* border-radius: 0.25rem; */

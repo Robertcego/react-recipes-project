@@ -21,7 +21,7 @@ const initialState = {
   recipeDetails: [],
   getRecipesName: [],
   getDiets: [],
-  postRecipe: {},
+  postRecipe: [],
   // Sorting states
   filterRecipes: [],
   sortBy: 'Select',

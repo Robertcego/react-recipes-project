@@ -9,7 +9,7 @@ function DotsLoader() {
         <div className='circle'></div>
       </div>
     </div>
-  );
+  )
 }
 
 export default DotsLoader;
