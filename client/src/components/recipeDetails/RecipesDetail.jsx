@@ -7,6 +7,8 @@ import DotsLoader from '../../utils/dotsLoader/DotsLoader';
 
 import './RecipesDetails.component.css';
 
+const recipePlaceholder = 'https://source.unsplash.com/650x500?food';
+
 function RecipesDetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -62,7 +64,9 @@ function RecipesDetail() {
           <div className='details-container' key={recipeDetail.id}>
             <img
               style={{ maxHeight: '16rem', maxWidth: '100%' }}
-              src={recipeDetail.image}
+              src={
+                recipeDetail.image ? recipeDetail.image : `${recipePlaceholder}`
+              }
               alt={recipeDetail.name}
             />
             <h2>{recipeDetail.name}</h2>

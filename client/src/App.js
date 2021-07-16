@@ -7,12 +7,13 @@ import RecipesSearch from './components/recipesSearch/RecipesSearch';
 
 import { Route } from 'react-router-dom';
 import AddRecipe from './components/addRecipe/AddRecipe';
+import Home from './components/Home/Home';
 
 function App() {
   return (
     <div className='App'>
       <NavBar />
-      <h1>Henry Food</h1>
+      <Route exact path='/' component={Home} />
       <Route exact path='/recipes' component={Recipes} />
       <Route exact path='/recipes/:id' component={RecipesDetail} />
       <Route exact path='/search' component={RecipesSearch} />

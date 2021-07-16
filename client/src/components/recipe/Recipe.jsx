@@ -6,6 +6,8 @@ import FoodTrivia from '../../utils/foodTrivia/FoodTrivia';
 
 import './Recipe.component.css';
 
+const recipePlaceholder = 'https://source.unsplash.com/650x500?food';
+
 function Recipe({ recipes, loading }) {
   if (loading)
     return (
@@ -21,7 +23,7 @@ function Recipe({ recipes, loading }) {
         {recipes.map((recipe) => (
           <div className='recipe-card' key={recipe.id}>
             <img
-              src={recipe.image}
+              src={recipe.image ? recipe.image : `${recipePlaceholder}`}
               style={{ maxWidth: '100%' }}
               alt={recipe.name}
             />
@@ -33,7 +35,7 @@ function Recipe({ recipes, loading }) {
               <p>
                 Health Score: {recipe.healthScore} | Score: {recipe.score}
               </p>
-              <Link to={`/recipes/${recipe.id}`}>
+              <Link className='btn' to={`/recipes/${recipe.id}`}>
                 <p className='btn'>More...</p>
               </Link>
             </div>

@@ -22,7 +22,6 @@ function RecipesSearch() {
 
   return (
     <div>
-      <div>Hello world!</div>
       <form onSubmit={handleSubmit}>
         <input
           type='text'

@@ -55,12 +55,12 @@ function Recipes() {
 
   return (
     <div className='container'>
-      <FilterDropdown />
       <Pagination
         recipesPerPage={recipesPerPage}
         totalRecipes={sortedRecipes.length}
         paginate={paginate}
       />
+      <FilterDropdown />
       {/* Recipes here*/}
       <Recipe recipes={recipesToDisplay} loading={loading} />
       {/* Recipes here*/}
