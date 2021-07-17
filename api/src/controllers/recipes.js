@@ -158,10 +158,12 @@ const getAllRecipes = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
   try {
+    // ! If we are looking for a local recipe
+    //! First look at the database for the recipe
     const { id } = req.params;
-
-    // ! Make sure the recipe exists and has an UUID
     if (id.includes('-')) {
+      // ! Make sure the recipe exists and has an UUID
+      // ! Assign that recipe to the variable
       let dbRecipe = await Recipe.findOne({
         where: {
           id,
@@ -173,11 +175,14 @@ const getById = async (req, res, next) => {
         console.log('====================================');
       });
 
+      // ! Get the diet values from the recipe we need, the one that matches the UUID
       let arr = [];
       dbRecipe.dataValues.diets.forEach((diet) =>
         arr.push(diet.dataValues.name)
       );
 
+      // ! Assign the dbRecipe values to a new variable
+      // ! Along with the diet values
       // ! Recipe from the database
       let recipeAttributes = {
         id: dbRecipe.id,
@@ -189,13 +194,21 @@ const getById = async (req, res, next) => {
         instructions: dbRecipe.instructions,
         diets: arr,
       };
+
+      // ! If theres no recipe in the database
       if (!dbRecipe) return res.send({ Error: 'Recipe not found.' });
+      // ! Send the recipe back to the user
       res.send(recipeAttributes);
-    } else {
+    }
+    // ! Now we look at the API for the external recipe
+    else {
       const { id } = req.params;
       let apiRecipe = await axios.get(
         `https://api.spoonacular.com/recipes/${id}/information?apiKey=${API_KEY}`
       );
+
+      // ! Filter only the values we need
+      // ! From the API response
 
       let apiRecipeAttributes = {
         id: apiRecipe.data.id,
@@ -207,6 +220,8 @@ const getById = async (req, res, next) => {
         instructions: apiRecipe.data.instructions,
         diets: apiRecipe.data.diets,
       };
+      // ! Finally send the recipe back to the user
+      // ! With the values we want
       res.send(apiRecipeAttributes);
     }
   } catch (err) {
@@ -221,8 +236,11 @@ const getById = async (req, res, next) => {
 
 const addRecipe = async (req, res, next) => {
   try {
+    // ! Get the request values
     const { name, summary, score, healthScore, instructions, diets } = req.body;
 
+    // ! Now we create a new recipe
+    // ! Assign the values we got from the request
     let newRecipe = await Recipe.create({
       id: uuidv4(),
       name,
@@ -232,9 +250,16 @@ const addRecipe = async (req, res, next) => {
       instructions,
     });
 
+    // ! If we have a diet value
+    // ! Add it to the recipe
+    // ! Through the related diet model: recipeType
     for (i = 0; i < diets.length; i++) {
       await newRecipe.addDiet(diets[i], { through: 'recipeType' });
     }
+
+    // ! Send the recipe back to the user
+    // ! Whose name is the same as the request
+    // ! With the new recipe
     const recipeDiets = await Recipe.findOne({
       where: {
         name: req.body.name,
