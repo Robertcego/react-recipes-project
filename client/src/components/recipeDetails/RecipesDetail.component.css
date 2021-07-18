@@ -1,0 +1,91 @@
+.colors {
+  color: #362417;
+  color: #92817a;
+  color: #f1dabf;
+  color: #fffbff;
+  color: #04030f;
+}
+
+.details-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  align-items: center;
+  justify-content: center;
+}
+
+.details-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.com/svgjs' width='600' height='600' preserveAspectRatio='none' viewBox='0 0 600 600'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1070%26quot%3b)' fill='none'%3e%3crect width='600' height='600' x='0' y='0' fill='rgba(241%2c 218%2c 191%2c 1)'%3e%3c/rect%3e%3cpath d='M0%2c217.352C42.833%2c221.094%2c87.24%2c215.25%2c123.994%2c192.938C161.214%2c170.343%2c190.217%2c134.504%2c204.326%2c93.312C217.791%2c54%2c203.005%2c12.695%2c199.926%2c-28.745C196.579%2c-73.782%2c219.069%2c-130.539%2c185.45%2c-160.693C150.714%2c-191.849%2c92.992%2c-151.084%2c48.358%2c-164.692C2.932%2c-178.542%2c-22.576%2c-239.474%2c-70.058%2c-238.595C-117.375%2c-237.719%2c-154.972%2c-196.885%2c-185.076%2c-160.369C-214.709%2c-124.423%2c-231.14%2c-80.292%2c-238.485%2c-34.289C-245.916%2c12.252%2c-252.018%2c63.684%2c-227.251%2c103.782C-203.085%2c142.908%2c-151.945%2c151.865%2c-110.809%2c172.423C-74.419%2c190.609%2c-40.527%2c213.811%2c0%2c217.352' fill='%23dca35f'%3e%3c/path%3e%3cpath d='M600 814.773C639.756 814.218 677.777 792.252 704.824 763.109 729.178 736.8679999999999 729.921 698.287 739.992 663.932 748.508 634.883 758.415 607.345 759.357 577.088 760.463 541.586 769.813 499.841 745.922 473.558 721.99 447.23 677.745 461.432 643.993 450.173 608.398 438.299 579.202 396.009 542.997 405.866 506.937 415.68399999999997 501.041 464.964 478.949 495.108 459.096 522.197 429.65 541.996 419.717 574.079 408.89099999999996 609.046 408.095 647.477 421.192 681.659 434.704 716.923 462.985 743.513 493.277 766.064 525.292 789.898 560.091 815.33 600 814.773' fill='white'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1070'%3e%3crect width='600' height='600' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  /* background-position: center; */
+  background-size: cover;
+  margin: 2rem 5rem;
+  border-radius: 1rem;
+}
+
+.details-left-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 50vw; */
+  padding: 2rem 0 2rem 10rem;
+}
+
+.details-name-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.details-name-container h1,
+.details-name-container h3
+/* .details-name-container p */ {
+  font-weight: bolder;
+  font-size: 2rem;
+}
+
+.details-img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50vw;
+  /* border: 1px solid black; */
+  height: 50vh;
+}
+
+.details-img-container img {
+  border-radius: 1.5rem;
+}
+
+.diets-style {
+  background-color: #362417;
+  color: #f1dabf;
+  padding: 0.4rem;
+  border-radius: 12px;
+}
+
+.dangerously-summary {
+  text-align: left;
+}
+
+.dangerously-summary a {
+  color: #04030f;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.dangerously-instructions {
+  text-align: left;
+}
+
+.details-right-container {
+  height: 40rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -15,7 +15,7 @@ function App() {
       <NavBar />
       <Route exact path='/' component={Home} />
       <Route exact path='/recipes' component={Recipes} />
-      <Route exact path='/recipes/:id' component={RecipesDetail} />
+      <Route path='/recipes/:id' component={RecipesDetail} />
       <Route exact path='/search' component={RecipesSearch} />
       <Route exact path='/create' component={AddRecipe} />
     </div>

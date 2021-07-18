@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getRecipeDetails } from '../../actions/index';
-import DotsLoader from '../../utils/dotsLoader/DotsLoader';
+// import DotsLoader from '../../utils/dotsLoader/DotsLoader';
 
-import './RecipesDetails.component.css';
+import './RecipesDetail.component.css';
 
 const recipePlaceholder = 'https://source.unsplash.com/650x500?food';
 
@@ -14,16 +14,12 @@ function RecipesDetail() {
   const dispatch = useDispatch();
   const recipeDetail = useSelector((state) => state.recipeDetails);
 
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (recipeDetail.length !== 0) return setIsLoading(false);
-    dispatch(getRecipeDetails(id));
-  }, [dispatch, id, recipeDetail.length]);
-
-  // const recipe = [];
-  // recipe.push(recipeDetail);
-  // console.log(recipeDetail);
+    // if (recipeDetail.length !== 0) return setIsLoading(false);
+    return dispatch(getRecipeDetails(id));
+  }, [dispatch, id, recipeDetail]);
 
   // DOM element rendered with dangeorouslySetInnerHTML
   const summary = () => {
@@ -33,56 +29,62 @@ function RecipesDetail() {
     return { __html: recipeDetail.instructions };
   };
 
-  // const HandleLoading = ({ isLoading }) => {
-  //   if (isLoading === true) {
-  //     return <DotsLoader />;
-  //   } else {
-  //     return (
-  //       <div key={recipeDetail.id}>
-  //         <h2>{recipeDetail.name}</h2>
-  //         Health Score: {recipeDetail.healthScore} Score: {recipeDetail.score}
-  //         <p>{recipeDetail.diets}</p>
-  //         <div dangerouslySetInnerHTML={summary()} />
-  //         <h3>Instructions:</h3>
-  //         <div dangerouslySetInnerHTML={instructions()} />
-  //         <img src={recipeDetail.image} alt={recipeDetail.name} />
-  //       </div>
-  //     );
-  //   }
-  // };
+  // if (isLoading) {
+  //   return (
+  //     <div className='loader-container'>
+  //       <h1 className='loader-text'>Please wait...</h1>
+  //       <DotsLoader />;
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>
-      {/* {recipe.map((recipe) => ( */}
-      {isLoading === true ? (
-        <div className='loader-container'>
-          <h1 className='loader-text'>Please wait...</h1>
-          <DotsLoader />;
-        </div>
-      ) : (
-        <>
-          <div className='details-container' key={recipeDetail.id}>
-            <img
-              style={{ maxHeight: '16rem', maxWidth: '100%' }}
-              src={
-                recipeDetail.image ? recipeDetail.image : `${recipePlaceholder}`
-              }
-              alt={recipeDetail.name}
-            />
-            <h2>{recipeDetail.name}</h2>
-            Health Score: {recipeDetail.healthScore} Score: {recipeDetail.score}
-            <p>{recipeDetail.diets}</p>
-            <div dangerouslySetInnerHTML={summary()} />
+      <div className='details-container' key={recipeDetail.id}>
+        <div className='details-card'>
+          <div className='details-left-container'>
+            <div className='details-name-container'>
+              <h1>{recipeDetail.name}</h1>
+              <br />
+              Health Score: {recipeDetail.healthScore} Score:{' '}
+              {recipeDetail.score}
+              <br />
+              <br />
+              <p>
+                <span className='diets-style'>{recipeDetail.diets}</span>
+              </p>
+              <br />
+              <div
+                className='dangerously-summary'
+                dangerouslySetInnerHTML={summary()}
+              />
+              <br />
+              <h3>Instructions:</h3>
+              <br />
+              <div
+                className='dangerously-instructions'
+                dangerouslySetInnerHTML={instructions()}
+              />
+            </div>
           </div>
 
-          <div>
-            <h3>Instructions:</h3>
-            <div dangerouslySetInnerHTML={instructions()} />
+          <div className='details-right-container'>
+            <div className='details-img-container'>
+              <img
+                style={{ maxHeight: '30rem', maxWidth: '100%' }}
+                src={
+                  recipeDetail.image
+                    ? recipeDetail.image
+                    : `${recipePlaceholder}`
+                }
+                alt={recipeDetail.name}
+              />
+            </div>
           </div>
-        </>
-      )}
-      {/* ))} */}
-      {/* <HandleLoading isLoading={isLoading} /> */}
+        </div>
+
+        {/* // ! MAIN CONTAINER */}
+      </div>
     </div>
   );
 }

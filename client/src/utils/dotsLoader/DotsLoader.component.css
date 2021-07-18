@@ -30,10 +30,6 @@
   background-color: #f1dabf;
   animation-delay: 0.75s;
 }
-/* // .circle:nth-child(3) {
-//   background-color: beige;
-//   animation-delay: 0.85s;
-// } */
 
 @keyframes rotate {
   from {

@@ -13,7 +13,7 @@ function Recipe({ recipes, loading }) {
     return (
       <div className='loader-container'>
         <h1 className='loader-text'>Please wait...</h1>
-        <DotsLoader />;
+        <DotsLoader />
       </div>
     );
   return (
