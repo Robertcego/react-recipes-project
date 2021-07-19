@@ -5,6 +5,8 @@ import { postRecipe, getDiets } from '../../actions/index';
 
 import './AddRecipe.component.css';
 
+// import { validation } from '../../utils/formErrorHandler/errorHandler';
+
 const recipePlaceholder = 'https://source.unsplash.com/650x700?food';
 
 function AddRecipe() {
@@ -14,7 +16,7 @@ function AddRecipe() {
   console.log(diets);
 
   // const [next, setNext] = useState(0);
-  const [recipe, setRecipe] = useState({
+  const [input, setInput] = useState({
     name: '',
     summary: '',
     score: 0,
@@ -60,39 +62,55 @@ function AddRecipe() {
   //   }
   // };
 
+  // const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
+    e.preventDefault();
+    const recipeInput = {
+      ...input,
+      [e.target.name]: e.target.value,
+    };
     if (e.target.name === 'diets') {
-      let diet = recipe[e.target.name];
-      setRecipe({
-        ...recipe,
+      let diet = input[e.target.name];
+      setInput({
+        ...input,
         [e.target.name]: diet.concat(e.target.value),
       });
+    } else {
+      setInput(recipeInput);
+      // setErrors(validation(recipeInput));
     }
-    setRecipe({
-      ...recipe,
-      [e.target.name]: e.target.value,
-    });
   };
   const handleChecked = (e) => {
     if (e.target.checked) {
-      setRecipe({
-        ...recipe,
-        diets: [...recipe.diets, e.target.value],
+      setInput({
+        ...input,
+        diets: [...input.diets, e.target.value],
       });
     } else {
-      setRecipe({
-        ...recipe,
-        diets: recipe.diets.filter((d) => d !== e.target.value),
+      setInput({
+        ...input,
+        diets: input.diets.filter((d) => d !== e.target.value),
       });
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(postRecipe(recipe));
+    dispatch(postRecipe(input));
+    alert('Your recipe has been created!');
+    setInput({
+      name: '',
+      summary: '',
+      score: 0,
+      healthScore: 0,
+      instructions: '',
+      diets: [],
+    });
+    e.target.reset();
   };
 
-  console.log(recipe);
+  console.log(input);
   return (
     <div className='main-form-container'>
       <div className='form-card'>
@@ -105,17 +123,27 @@ function AddRecipe() {
             <h1 className='form-title'>Create your own recipe!</h1>
             <h4>Name</h4>
             <input
+              onChange={handleChange}
               type='text'
               name='name'
+              // className={errors.name ? 'danger' : ''}
               placeholder='Name'
-              onChange={handleChange}
+              // value={input.name}
             />
+            {input.name === '' && (
+              <p className='danger'>Recipe name required.</p>
+            )}
             <h4>Summary</h4>
             <textarea
-              name='summary'
-              placeholder='Recipe Summary'
               onChange={handleChange}
+              name='summary'
+              // className={errors.summary && 'danger'}
+              placeholder='Recipe Summary'
+              // value={input.summary}
             />
+            {input.summary === '' && (
+              <p className='danger'>Recipe summary is required.</p>
+            )}
           </div>
           {/* )} */}
           {/* {next === 1 && ( */}
@@ -124,6 +152,7 @@ function AddRecipe() {
             <input
               type='number'
               name='score'
+              // value={input.score}
               min='0'
               max='100'
               placeholder='Score'
@@ -133,6 +162,7 @@ function AddRecipe() {
             <input
               type='number'
               name='healthScore'
+              // value={input.healthScore}
               min='0'
               max='100'
               placeholder='Health Score'
@@ -145,6 +175,7 @@ function AddRecipe() {
             <h4>Instructions</h4>
             <textarea
               name='instructions'
+              // value={input.instructions}
               cols='30'
               rows='10'
               placeholder='Instructions'

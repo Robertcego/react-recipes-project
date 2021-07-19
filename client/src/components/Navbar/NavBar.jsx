@@ -1,7 +1,8 @@
 import React from 'react';
 import './NavBar.component.css';
-
 import { NavLink } from 'react-router-dom';
+
+import { FaSearch } from 'react-icons/fa';
 
 function NavBar() {
   return (
@@ -14,11 +15,11 @@ function NavBar() {
         <NavLink className='navbar-item' to='/recipes'>
           Recipes
         </NavLink>
-        <NavLink className='navbar-item' to='/search'>
-          Search
-        </NavLink>
         <NavLink className='navbar-item' to='/create'>
           Create Recipe
+        </NavLink>
+        <NavLink className='navbar-item' to='/search'>
+          <FaSearch />
         </NavLink>
       </div>
     </div>

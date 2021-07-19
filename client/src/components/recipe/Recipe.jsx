@@ -7,7 +7,7 @@ import FoodTrivia from '../../utils/foodTrivia/FoodTrivia';
 import './Recipe.component.css';
 
 const recipePlaceholder = 'https://source.unsplash.com/650x500?food';
-
+const noDiet = 'No diets specified...';
 function Recipe({ recipes, loading }) {
   if (loading)
     return (
@@ -30,14 +30,18 @@ function Recipe({ recipes, loading }) {
             <div className='container'>
               <h3>{recipe.name}</h3>
               <p className='diet-types'>
-                <span className='diet-type'>{recipe.diets}</span>
+                <span className='diet-type'>
+                  {recipe.diets.length !== 0 ? recipe.diets : `${noDiet}`}
+                </span>
               </p>
               <p>
                 Health Score: {recipe.healthScore} | Score: {recipe.score}
               </p>
-              <Link className='btn' to={`/recipes/${recipe.id}`}>
-                <p className='btn'>More...</p>
-              </Link>
+              <div className='btn-container'>
+                <Link className='btn' to={`/recipes/${recipe.id}`}>
+                  More details...
+                </Link>
+              </div>
             </div>
           </div>
         ))}
