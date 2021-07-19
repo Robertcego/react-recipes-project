@@ -56,6 +56,11 @@
 
 .hero-button:hover {
   transform: scale(1.1);
+  background-color: #f1dabf;
+}
+
+.hero-button:hover :nth-child(1) {
+  color: #362417 !important;
 }
 
 .h-btn {

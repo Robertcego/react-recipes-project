@@ -23,3 +23,9 @@
   text-decoration: none;
   color: #f1dabf;
 }
+
+.navbar-item:hover {
+  background-color: #f1dabf;
+  color: #362417;
+  transition: all 0.2s ease-in-out;
+}

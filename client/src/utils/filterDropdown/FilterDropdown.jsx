@@ -34,7 +34,10 @@ function FilterDropdown() {
 
   return (
     <div>
-      <select onChange={(e) => dispatch(sortByDiet(e.target.value))}>
+      <select
+        className='diet-options'
+        onChange={(e) => dispatch(sortByDiet(e.target.value))}
+      >
         <option default value='All'>
           All
         </option>
@@ -44,7 +47,7 @@ function FilterDropdown() {
           </option>
         ))}
       </select>
-      <select onChange={(e) => handleSort(e)}>
+      <select className='sort-options' onChange={(e) => handleSort(e)}>
         <option value='High_Score'>Score: Low to High</option>
         <option value='Low_Score'>Score: High to Low</option>
         <option value='Ascending_Name'>Ascending Name (A-Z)</option>
