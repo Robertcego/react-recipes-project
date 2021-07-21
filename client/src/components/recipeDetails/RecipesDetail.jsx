@@ -19,7 +19,7 @@ function RecipesDetail() {
   useEffect(() => {
     // if (recipeDetail.length !== 0) return setIsLoading(false);
     return dispatch(getRecipeDetails(id));
-  }, [dispatch, id, recipeDetail]);
+  }, []);
 
   // DOM element rendered with dangeorouslySetInnerHTML
   const summary = () => {

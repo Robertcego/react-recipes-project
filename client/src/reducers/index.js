@@ -106,7 +106,7 @@ const rootReducer = (state = initialState, action) => {
     case RESET: {
       return {
         ...state,
-        filterRecipes: [],
+        filterRecipes: state.getRecipes,
         orderBy: 'Select',
         filterBy: 'All',
       };

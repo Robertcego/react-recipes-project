@@ -15,8 +15,8 @@ const axios = require('axios');
 // const API_KEY = '337a3948a09a4db69a2a549e4a9389e9';
 // const API_KEY = 'ae481a929f3a482e888842470383726f';
 // const API_KEY = 'e63d396d22ff46d58f9347d997dbe1e0';
-const API_KEY = '638b58a40c3344bebe9e4d44b52b083c';
-// const API_KEY = '1f554d43be8746f89ad35d052160c0eb';
+// const API_KEY = '638b58a40c3344bebe9e4d44b52b083c';
+const API_KEY = '1f554d43be8746f89ad35d052160c0eb';
 // const API_KEY = '044ea3e089db4849920884a51ed83add';
 // const API_KEY = '7198aa54902d4f7b8800b87cd3f3eb96';
 // const API_KEY = '0f1cc946d524471f8699a26de042da04'; // <---
@@ -33,16 +33,24 @@ const API_KEY = '638b58a40c3344bebe9e4d44b52b083c';
 // const API_KEY = 'f82367cf3574481aa9b0f9c27d225015';
 // const API_KEY = 'ff755847d8b44e34b25a6381c5ef035d';
 
-// ***** getAllRecipes ***** \\
+// ****** Get Recipes by Name ****** \\
 
 const getRecipesName = async (req, res, next) => {
   const { name } = req.query;
   try {
+    // ! Make the request to the API
     const apiRecipes = await axios.get(
       `https://api.spoonacular.com/recipes/complexSearch?query=${name}&number=9&addRecipeInformation=true&apiKey=${API_KEY}`
     );
+
+    // ! Declare an empty array to hold
+    // ! the recipe values that I need from the api
     const apiRecipesAttributes = [];
+
+    // ! Get the values that I need to work from the response
     for (let i = 0; i < apiRecipes.data.results.length; i++) {
+      // ! Define the attributes that I need from the api
+      // ! Through an object
       let apiRecipe = {
         id: apiRecipes.data.results[i].id,
         name: apiRecipes.data.results[i].title,
@@ -53,9 +61,13 @@ const getRecipesName = async (req, res, next) => {
         instructions: apiRecipes.data.results[i].instructions,
         image: apiRecipes.data.results[i].image,
       };
+
+      // ! Push that object to the array
       apiRecipesAttributes.push(apiRecipe);
     }
 
+    // ! Now I take a look at the database
+    // ! to see if it has recipes
     const dbRecipes = await Recipe.findAll({
       where: {
         name: {
@@ -66,19 +78,36 @@ const getRecipesName = async (req, res, next) => {
       attributes: { exclude: ['createdAt', 'updatedAt'] },
     });
 
+    // ! If there are no recipes in the database
     if (dbRecipes.length === 0) {
+      // ! Define a new variable and assign it
+      // ! to the array of recipes from the api
       let recipeResults = apiRecipesAttributes;
 
-      console.log(apiRecipesAttributes);
+      // ! If there are recipes in the api call
       if (apiRecipesAttributes.length === 0) {
         return res.status(404).send('Recipes not found');
       }
+      // ! Else send the recipes from the api
       return res.send(recipeResults);
     } else {
+      // ! Now, If I have recipes in the database
+      // ! Define a new array to hold the recipes
       let dataResponse = [];
+
+      // ! Loop through the recipes in the database
       for (let i = 0; i < dbRecipes.length; i++) {
+        // ! Define a variable
+        // !to hold the diets from the database recipe
         let diets = [];
+
+        // ! Loop through the diets in the database recipe
+        // ! and push them into the diets array
         dbRecipes[i].diets.map((diet) => diets.push(diet.name));
+
+        // ! Now I that I have the diets array
+        // ! I can create the object that will be sent
+        // ! to the user call with the recipes from the database
         let dbResponse = {
           id: dbRecipes[i].id,
           name: dbRecipes[i].name,
@@ -88,8 +117,14 @@ const getRecipesName = async (req, res, next) => {
           instructions: dbRecipes[i].instructions,
           diets: diets,
         };
+
+        // ! Push the object to the array that will be sent
         dataResponse.push(dbResponse);
       }
+
+      // ! Now that both api and database recipes
+      // ! I concat then into a single array
+      // ! and send it to the user
       let allRecipes = dataResponse.concat(apiRecipesAttributes);
 
       return res.send(allRecipes);
@@ -101,6 +136,8 @@ const getRecipesName = async (req, res, next) => {
     next(err);
   }
 };
+
+// ****** Get All Recipes ****** \\
 
 const getAllRecipes = async (req, res, next) => {
   try {
@@ -158,7 +195,7 @@ const getAllRecipes = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
   try {
-    // ! If we are looking for a local recipe
+    // ? If we are looking for a local recipe
     //! First look at the database for the recipe
     const { id } = req.params;
     if (id.includes('-')) {
@@ -176,9 +213,9 @@ const getById = async (req, res, next) => {
       });
 
       // ! Get the diet values from the recipe we need, the one that matches the UUID
-      let arr = [];
+      let diets = [];
       dbRecipe.dataValues.diets.forEach((diet) =>
-        arr.push(diet.dataValues.name)
+        diets.push(diet.dataValues.name)
       );
 
       // ! Assign the dbRecipe values to a new variable
@@ -192,7 +229,7 @@ const getById = async (req, res, next) => {
         image: dbRecipe.image,
         healthScore: dbRecipe.healthScore,
         instructions: dbRecipe.instructions,
-        diets: arr,
+        diets: diets,
       };
 
       // ! If theres no recipe in the database
@@ -200,6 +237,7 @@ const getById = async (req, res, next) => {
       // ! Send the recipe back to the user
       res.send(recipeAttributes);
     }
+    // ? If we are looking for an api recipe
     // ! Now we look at the API for the external recipe
     else {
       const { id } = req.params;

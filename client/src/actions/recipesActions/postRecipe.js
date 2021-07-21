@@ -22,22 +22,6 @@ const postRecipe = (recipe) => {
       console.log(error);
     }
   };
-  // return (dispatch) =>
-  //   fetch('http://localhost:3001/recipe', {
-  //     method: 'post',
-  //     body: JSON.stringify(recipe),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Accept: 'application/json',
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((json) => {
-  //       dispatch({
-  //         type: POST_RECIPE,
-  //         payload: json,
-  //       });
-  //     });
 };
 
 export default postRecipe;

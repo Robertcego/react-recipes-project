@@ -11,8 +11,8 @@ const axios = require('axios');
 // const API_KEY = '337a3948a09a4db69a2a549e4a9389e9';
 // const API_KEY = 'ae481a929f3a482e888842470383726f';
 // const API_KEY = 'e63d396d22ff46d58f9347d997dbe1e0';
-const API_KEY = '638b58a40c3344bebe9e4d44b52b083c';
-// const API_KEY = '1f554d43be8746f89ad35d052160c0eb';
+// const API_KEY = '638b58a40c3344bebe9e4d44b52b083c';
+const API_KEY = '1f554d43be8746f89ad35d052160c0eb';
 // const API_KEY = '044ea3e089db4849920884a51ed83add';
 // const API_KEY = '7198aa54902d4f7b8800b87cd3f3eb96';
 // const API_KEY = '0f1cc946d524471f8699a26de042da04'; // <---
@@ -38,6 +38,7 @@ const getAllDiets = async (req, res, next) => {
 
     await apiData.data.results.forEach((result) => {
       result.diets.forEach((diet) => {
+        // ! Make sure to only push the diets that are not already in the database
         if (!allDiets.includes(diet)) {
           allDiets.push(diet);
         }
@@ -50,6 +51,9 @@ const getAllDiets = async (req, res, next) => {
         },
       });
     }
+
+    // ! Finally, return all the diets
+    // ! from the database
     let dietResults = await Diet.findAll();
     res.send(dietResults);
   } catch (err) {
