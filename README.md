@@ -11,3 +11,7 @@
         Backend:
             Sequelize
             PostgreSQL
+
+
+
+*** Need to fix the implementation when useEffect is called in the recipes component ***
